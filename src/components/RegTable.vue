@@ -32,22 +32,21 @@ watch(() => props.value, (newVal) => {
 </script>
 
 <template>
-  <v-table>
-    <thead>
-      <tr>
-        <th colspan="2">{{ props.name }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th>Register</th>
-        <th>Value</th>
-      </tr>
-      <tr v-for="row in table">
-        <td>{{ row[0] }}</td>
-        <td>{{ row[1] }}</td>
-      </tr>
-    </tbody>
-  </v-table>
+  <v-col>
+    <a>{{  props.name }}</a>
+
+    <v-table>
+      <tbody>
+        <tr>
+          <th>Register</th>
+          <td v-for="col in table">{{  col[0] }}</td>
+        </tr>
+        <tr>
+          <th>Value</th>
+          <td v-for="col in table"> {{ col[1] }}</td>
+        </tr>
+      </tbody>
+    </v-table>
+  </v-col>
 </template>
 
