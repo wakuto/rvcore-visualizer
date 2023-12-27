@@ -2,6 +2,7 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import RegTable from "./components/RegTable.vue";
+import Rob from "./components/Rob.vue";
 import { reactive, watch } from "vue";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
@@ -21,6 +22,8 @@ const reg_table = [
 let rename_map_table = reactive({ value: [] })
 let commit_map_table = reactive({ value: [] })
 let physical_reg_file = reactive({ value: [] })
+let rob = reactive({ value: [] })
+let isq = reactive({ value: [] })
 
 let signals: Array<any> = []
 let clock_num = reactive({value: 0});
@@ -30,6 +33,8 @@ listen<string>('vcd_file_selected', (event) => {
     rename_map_table.value = [];
     commit_map_table.value = [];
     physical_reg_file.value = [];
+    isq.value = [];
+    rob.value = [];
   }
   clock_num.value = 0;
   signals = JSON.parse(event.payload);
@@ -40,9 +45,11 @@ async function openVcdFile() {
 }
 
 watch(() => clock_num.value, () => {
-  rename_map_table.value = signals[clock_num.value]["rename_map_table"] || [];  
-  commit_map_table.value = signals[clock_num.value]["commit_map_table"] || [];
-  physical_reg_file.value = signals[clock_num.value]["physical_regfile"] || [];
+  rename_map_table.value = signals[clock_num.value]["regfiles"]["rename_map_table"] || [];  
+  commit_map_table.value = signals[clock_num.value]["regfiles"]["commit_map_table"] || [];
+  physical_reg_file.value = signals[clock_num.value]["regfiles"]["physical_regfile"] || [];
+  rob.value = signals[clock_num.value]["rob"] || [];
+  isq.value = signals[clock_num.value]["isq"] || [];
   if (physical_reg_file.value.length == 0) {
     console.log("physical_reg_file is empty");
     console.log(signals[clock_num.value])
@@ -69,7 +76,10 @@ watch(() => clock_num.value, () => {
         </v-col>
       </v-row>
     </v-container>
-    <a>Clock: {{ clock_num.value }}</a>
+    <a>Clock: {{ clock_num.value }}</a><br>
+    <Rob :value="rob.value"/>
+    <!--<a>ROB: {{ rob.value }}</a><br>-->
+    <a>ISQ: {{ isq.value }}</a>
     <div class="reg_container">
       <v-container>
         <v-row>
