@@ -3,6 +3,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import RegTable from "./components/RegTable.vue";
 import Rob from "./components/Rob.vue";
+import Isq from "./components/Isq.vue";
 import { reactive, watch } from "vue";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
@@ -61,9 +62,8 @@ watch(() => clock_num.value, () => {
 <template>
   <div class="container">
     <!-- file open button -->
-    <v-btn @click="openVcdFile">Open VCD File</v-btn>
-    <br>
     <v-container class="controller_container">
+      <v-row> <v-col> <v-btn @click="openVcdFile">Open VCD File</v-btn> </v-col> </v-row>
       <v-row>
         <v-col>
           <v-btn @click="clock_num.value--">Prev Clock</v-btn>
@@ -77,14 +77,15 @@ watch(() => clock_num.value, () => {
       </v-row>
     </v-container>
     <a>Clock: {{ clock_num.value }}</a><br>
-    <Rob :value="rob.value"/>
-    <!--<a>ROB: {{ rob.value }}</a><br>-->
-    <a>ISQ: {{ isq.value }}</a>
+    <v-row>
+      <v-col cols="6"> <Rob height="20vh" :value="rob.value"/> </v-col>      
+      <v-col cols="6"> <Isq height="20vh" :value="isq.value"/> </v-col>
+    </v-row>
     <div class="reg_container">
       <v-container>
         <v-row>
-          <v-col> <RegTable name="rename_map_table" :keys="reg_table" :value="rename_map_table.value"/> </v-col>
-          <v-col> <RegTable name="commit_map_table" :keys="reg_table" :value="commit_map_table.value"/> </v-col>
+          <v-col> <RegTable name="rename_map_table" :keys="reg_table" :value="rename_map_table.value" /> </v-col>
+          <v-col> <RegTable name="commit_map_table" :keys="reg_table" :value="commit_map_table.value" :phys_regs="physical_reg_file.value"/> </v-col>
           <v-col> <RegTable name="physical_reg_file" :keys="Array.from({length: 64}, (_, k) => k.toString())" :value="physical_reg_file.value"/> </v-col>
         </v-row>
       </v-container>

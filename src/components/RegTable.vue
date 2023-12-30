@@ -6,6 +6,7 @@ const props = defineProps({
   name: String,
   keys: Array as () => Array<string>,
   value: Array as () => Array<string>,
+  phys_regs: Array as () => Array<number>,
 });
 
 const table = ref([ ] as Array<[string, string]>)
@@ -44,6 +45,10 @@ watch(() => props.value, (newVal) => {
         <tr>
           <th>Value</th>
           <td v-for="col in table"> {{ col[1] }}</td>
+        </tr>
+        <tr v-if="props.phys_regs">
+          <th>PhysRegs Value</th>
+          <td v-for="col in table"> {{ props.phys_regs[Number(col[1])] }}</td>
         </tr>
       </tbody>
     </v-table>

@@ -4,6 +4,7 @@ import { watch } from "vue";
 
 const props = defineProps({
   value: Array as () => Array<Array<types.RobEntry>>,
+  height: String,
 });
 
 watch(() => props.value, () => {
@@ -15,7 +16,7 @@ watch(() => props.value, () => {
   <v-col>
     <a>ROB</a>
 
-    <v-table height="30vh">
+    <v-table :height="props.height">
       <thead>
         <tr>
           <th colspan="4">bank 0</th>
@@ -27,21 +28,21 @@ watch(() => props.value, () => {
           <th>valid</th>
           <th>phys_rd</th>
           <th>arch_rd</th>
-          <th>commit_ready</th>
+          <th>ready</th>
           <th>valid</th>
           <th>phys_rd</th>
           <th>arch_rd</th>
-          <th>commit_ready</th>
+          <th>ready</th>
         </tr>
         <tr v-for="entry in props.value">
-          <td>{{ entry[0].entry_valid }}</td>
+          <td>{{ entry[0].entry_valid ? "✅" : "-" }}</td>
           <td>{{ entry[0].phys_rd }}</td>
           <td>{{ entry[0].arch_rd }}</td>
-          <td>{{ entry[0].commit_ready }}</td>
-          <td>{{ entry[1].entry_valid }}</td>
+          <td>{{ entry[0].commit_ready ? "⭕" : "❌" }}</td>
+          <td>{{ entry[1].entry_valid ? "✅" : "-" }}</td>
           <td>{{ entry[1].phys_rd }}</td>
           <td>{{ entry[1].arch_rd }}</td>
-          <td>{{ entry[1].commit_ready }}</td>
+          <td>{{ entry[1].commit_ready ? "⭕" : "❌" }}</td>
         </tr>
       </tbody>
     </v-table>
